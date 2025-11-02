@@ -1,13 +1,21 @@
-import Header from "@/components/header";
-import Hero from "@/components/hero";
-// import Footer from "@/components/footer";
+import Header from "@/components/layout/header";
+import Hero from "@/components/sections/hero";
+import AboutSection from "@/components/sections/about";
+import BenefitsSection from "@/components/sections/benefits";
+import CoursesSection from "@/components/sections/courses";
+// import RequirementsSection from "@/components/sections/requirements";
+import MedpartSection from "@/components/sections/medpart";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <Header />
       <Hero />
-      {/* <Footer /> */}
+      <AboutSection />
+      <BenefitsSection />
+      <CoursesSection />
+      {/* <RequirementsSection /> */}
+      <MedpartSection />
     </div>
   );
 }
