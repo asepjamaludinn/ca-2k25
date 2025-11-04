@@ -4,6 +4,7 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import TextPressure from "../TextPressure";
 import { THEME } from "@/lib/theme";
+import { motion, Variants } from "framer-motion";
 
 interface AnimatedElementProps {
   children: React.ReactNode;
@@ -41,99 +42,101 @@ function AnimatedElement({ children, delay }: AnimatedElementProps) {
   );
 }
 
-interface ProgramCardProps {
+interface AnimatedTextProps {
+  text: string;
+  className: string;
+}
+
+function AnimatedText({ text, className }: AnimatedTextProps) {
+  const words = text.split(" ");
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.03 },
+    },
+  };
+
+  const wordVariants: Variants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 100, damping: 12 },
+    },
+  };
+
+  return (
+    <motion.p
+      className={className}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {words.map((word, index) => (
+        <motion.span
+          key={index}
+          variants={wordVariants}
+          style={{ display: "inline-block", marginRight: "0.25em" }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </motion.p>
+  );
+}
+
+interface FeatureBoxProps {
   title: string;
   description: string;
-  accentColor: string;
   delay: number;
 }
 
-function ProgramCard({
-  title,
-  description,
-  accentColor,
-  delay,
-}: ProgramCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
+function FeatureBox({ title, description, delay }: FeatureBoxProps) {
   return (
     <AnimatedElement delay={delay}>
-      <div
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className="group relative flex flex-col items-start justify-between p-6 rounded-lg border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden transition-all duration-500 hover:bg-white/[0.08] hover:border-white/30 cursor-pointer min-h-[180px]"
-        style={{
-          boxShadow: isHovered
-            ? `inset 0 0 20px ${accentColor}20, 0 0 20px ${accentColor}20`
-            : "none",
-          transition: "all 500ms cubic-bezier(0.23, 1, 0.320, 1)",
-        }}
-      >
-        {/* Top accent line */}
+      <div className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.05] hover:border-white/20 h-full">
         <div
-          className={`absolute top-0 left-0 right-0 h-px transition-all duration-500 ${
-            isHovered ? "opacity-100" : "opacity-0"
-          }`}
+          className="absolute left-0 top-0 h-full w-px"
           style={{
-            background: `linear-gradient(to right, ${accentColor}, transparent)`,
+            background: `linear-gradient(to bottom, ${THEME.colors.primary} 0%, transparent 100%)`,
           }}
         />
-
-        {/* Content */}
-        <div className="relative z-10 flex-1">
-          <h3
-            className="text-xs font-pixel text-white mb-3 transition-all duration-300 tracking-widest uppercase"
-            style={{
-              color: isHovered ? accentColor : "#FFFFFF",
-              textShadow: isHovered ? `0 0 10px ${accentColor}40` : "none",
-              letterSpacing: "0.1em",
-            }}
-          >
+        <div className="text-center md:text-left">
+          <h4 className="font-pixel text-base text-white mb-2 tracking-wide">
             {title}
-          </h3>
-          <p className="text-[10px] text-gray-400 group-hover:text-gray-300 transition-colors duration-300 font-light leading-relaxed">
+          </h4>
+          <p className="text-sm text-gray-400 font-sans leading-relaxed">
             {description}
           </p>
         </div>
-
-        {/* Bottom accent indicator */}
-        <div
-          className="h-1 rounded-full transition-all duration-500 mt-4"
-          style={{
-            background: `linear-gradient(to right, ${accentColor}, transparent)`,
-            width: isHovered ? "32px" : "12px",
-          }}
-        />
       </div>
     </AnimatedElement>
   );
 }
 
 export default function AboutSection() {
-  return (
-    <section className="min-h-screen bg-black pt-32 pb-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Subtle grid background */}
-      <div className="absolute inset-0 opacity-[0.008] pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-            linear-gradient(rgba(179, 0, 94, 0.5) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(179, 0, 94, 0.5) 1px, transparent 1px)
-          `,
-            backgroundSize: "80px 80px",
-          }}
-        />
-      </div>
+  const arcadeWelcomeText =
+    "Welcome to the Cyber Academy, where learning transforms into an extraordinary adventure! Here, innovation isn't just a feature, it's the game engine. Teamwork is at the heart of every 'co-op mission' we do, and every new member helps build our vibrant world of knowledge. This is your chance to level up your skills, discover hidden 'easter eggs' in technology, and forge endless possibilities. Are you ready to press start and achieve a new high score?";
 
+  return (
+    <section
+      id="about"
+      className="min-h-screen bg-black pt-32 pb-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header section */}
-        <div className="mb-24">
+        <div className="mb-20 text-center md:text-left">
           <AnimatedElement delay={0}>
-            <div className="flex items-center gap-2 mb-8">
-              <div className="w-1 h-6 bg-gradient-to-b from-[#00D9FF] to-[#B3005E]" />
+            <div className="flex items-center justify-center md:justify-start gap-2 mb-8">
+              <div
+                className="w-1 h-6"
+                style={{
+                  background: `linear-gradient(to bottom, ${THEME.colors.primary}, ${THEME.colors.accent})`,
+                }}
+              />
               <span
-                className="text-[10px] font-pixel text-gray-400 tracking-widest"
+                className="text-sm font-pixel text-gray-400 tracking-widest"
                 style={{ letterSpacing: "0.2em" }}
               >
                 ABOUT US
@@ -142,13 +145,7 @@ export default function AboutSection() {
           </AnimatedElement>
 
           <AnimatedElement delay={100}>
-            <div
-              style={{
-                position: "relative",
-                height: "200px",
-                marginBottom: "32px",
-              }}
-            >
+            <div className="relative w-full mb-16">
               <TextPressure
                 text="Cyber Academy"
                 flex={true}
@@ -158,29 +155,67 @@ export default function AboutSection() {
                 weight={true}
                 italic={true}
                 textColor="#FFFFFF"
-                strokeColor="#B3005E"
+                strokeColor={THEME.colors.primary}
                 minFontSize={48}
               />
             </div>
           </AnimatedElement>
-
-          <AnimatedElement delay={200}>
-            <p className="text-xs text-gray-400 max-w-3xl leading-loose tracking-wide font-light font-pixel">
-              Cyber Academy delivers intensive, hands-on training in
-              cutting-edge cybersecurity and emerging technologies. We bridge
-              the gap between theoretical knowledge and industry-ready expertise
-              through immersive learning experiences tailored for the digital
-              era.
-            </p>
-          </AnimatedElement>
         </div>
 
-        {/* CTA section */}
-        <AnimatedElement delay={800}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+          <div className="flex flex-col gap-6 items-center text-center md:items-start md:text-left">
+            <AnimatedElement delay={200}>
+              <h3
+                className="text-2xl font-pixel tracking-wider"
+                style={{ color: THEME.colors.primary }}
+              >
+                YOUR QUEST BEGINS
+              </h3>
+            </AnimatedElement>
+
+            <AnimatedElement delay={300}>
+              <AnimatedText
+                text={arcadeWelcomeText}
+                className="text-base text-gray-300 max-w-xl leading-relaxed tracking-wide font-sans"
+              />
+            </AnimatedElement>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <FeatureBox
+              title="INNOVATION ENGINE"
+              description="We don't just follow trends. You'll build the 'game engine' for what's next."
+              delay={500}
+            />
+            <FeatureBox
+              title="CO-OP MISSIONS"
+              description="Teamwork is our core loop. Grow together in a vibrant, high-score community."
+              delay={600}
+            />
+            <FeatureBox
+              title="LEVEL UP YOUR SKILLS"
+              description="This isn't just a journey; it's a skill tree. Unlock your full potential."
+              delay={700}
+            />
+          </div>
+        </div>
+
+        <AnimatedElement delay={900}>
           <div className="group relative p-10 md:p-16 rounded-lg border border-white/10 bg-gradient-to-r from-white/[0.02] via-white/[0.01] to-white/[0.02] backdrop-blur-sm overflow-hidden transition-all duration-700 hover:border-white/30 hover:bg-white/[0.04]">
-            {/* Gradient accent corners */}
-            <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-[#00D9FF]/5 to-transparent rounded-full blur-3xl -z-10" />
-            <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-[#B3005E]/5 to-transparent rounded-full blur-3xl -z-10" />
+            <div
+              className="absolute top-0 left-0 w-40 h-40 rounded-full blur-3xl -z-10"
+              style={{
+                background: `radial-gradient(${THEME.colors.accent} 0%, transparent 70%)`,
+                opacity: 0.15,
+              }}
+            />
+            <div
+              className="absolute bottom-0 right-0 w-40 h-40 rounded-full blur-3xl -z-10"
+              style={{
+                background: `radial-gradient(${THEME.colors.primary} 0%, transparent 70%)`,
+                opacity: 0.15,
+              }}
+            />
 
             <div className="text-center">
               <h3
@@ -189,33 +224,21 @@ export default function AboutSection() {
               >
                 Begin Your Journey
               </h3>
-              <p className="text-xs text-gray-400 mb-10 max-w-lg mx-auto leading-relaxed font-light">
+              <p className="text-base text-gray-400 mb-10 max-w-lg mx-auto leading-relaxed font-sans">
                 Join industry leaders and aspiring professionals in our
-                transformative cybersecurity programs designed for the modern
-                era.
+                transformative programs designed for the modern era.
               </p>
               <button
-                className="relative px-8 py-3 font-pixel rounded-lg overflow-hidden group/btn transition-all duration-500 uppercase text-[10px] tracking-widest"
+                className="relative px-8 py-3 font-pixel rounded-lg overflow-hidden
+                           transition-all duration-300 ease-out 
+                           uppercase text-xs tracking-widest text-black
+                           transform-gpu 
+                           hover:scale-105 
+                           hover:shadow-[0_0_30px_#00D9FF50,inset_0_0_20px_#FFFFFF20]
+                           active:scale-95"
                 style={{
                   background: `linear-gradient(135deg, #00D9FF, ${THEME.colors.primary})`,
-                  color: "#000000",
                   letterSpacing: "0.15em",
-                }}
-                onMouseEnter={(e) => {
-                  const btn = e.currentTarget;
-                  btn.style.boxShadow = `0 0 30px #00D9FF50, inset 0 0 20px #FFFFFF20`;
-                  btn.style.transform = "scale(1.05)";
-                }}
-                onMouseLeave={(e) => {
-                  const btn = e.currentTarget;
-                  btn.style.boxShadow = "none";
-                  btn.style.transform = "scale(1)";
-                }}
-                onMouseDown={(e) => {
-                  e.currentTarget.style.transform = "scale(0.98)";
-                }}
-                onMouseUp={(e) => {
-                  e.currentTarget.style.transform = "scale(1.05)";
                 }}
               >
                 <span className="relative z-10">Explore Programs</span>

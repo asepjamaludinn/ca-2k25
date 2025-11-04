@@ -132,3 +132,7 @@
 .font-orbitron {
   font-family: "Orbitron", sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
