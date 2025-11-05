@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { THEME } from "@/lib/theme";
 import { motion, Variants } from "framer-motion";
 import Lottie from "lottie-react";
+
 import cyberAnimation from "@/public/lottie/game.json";
 
 export default function Hero() {
@@ -43,26 +44,24 @@ export default function Hero() {
                  px-4 md:px-8 py-20 relative overflow-hidden bg-black"
       id="home"
     >
-      <div
-        className="absolute inset-0 opacity-20 pointer-events-none select-none"
+        <div
+        className="absolute inset-0 opacity-20 pointer-events-none select-none z-0"
         style={{
-          backgroundImage: "url(/images/grid.svg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+         backgroundImage: "url(/images/grid.svg)",
+         backgroundSize: "cover",
+         backgroundPosition: "center",
         }}
-      />
+       /> 
 
       <motion.div
-        className="relative z-50 flex flex-col md:flex-row items-center 
+        className="relative flex flex-col md:flex-row items-center 
                    justify-between w-full max-w-7xl gap-8 md:gap-12"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+          variants={itemVariants}
           className="flex flex-col items-center text-center md:items-start md:text-left 
                      w-full md:w-3/5 order-2 md:order-1"
         >
@@ -138,20 +137,20 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          className="w-full md:w-2/5 
-                     order-1 md:order-2"
+          className="w-full md:w-2/5 order-1 md:order-2"
           variants={itemVariants}
         >
           <Lottie animationData={cyberAnimation} loop={true} />
         </motion.div>
       </motion.div>
 
-      <div
+        <div
         className="absolute bottom-0 left-0 w-full h-32 z-10 pointer-events-none"
         style={{
-          background: `linear-gradient(to top, ${THEME.colors.black} 0%, ${THEME.colors.secondary} 50%, transparent 100%)`,
+         background: `linear-gradient(to top, ${THEME.colors.black} 0%, ${THEME.colors.secondary} 50%, transparent 100%)`,
         }}
-      />
+       /> 
+
     </section>
   );
 }

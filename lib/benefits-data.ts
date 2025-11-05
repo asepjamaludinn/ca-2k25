@@ -3,7 +3,7 @@ import type { BentoCardProps } from "@/components/MagicBento";
 export const BENEFITS_DATA: BentoCardProps[] = [
   {
     color: "#0a0a0a",
-    title: "Poin TAK",
+    title: "TAK Point",
     description:
       "Earn valuable reward points for every milestone achieved in the academy",
     label: "Rewards System",
@@ -17,14 +17,14 @@ export const BENEFITS_DATA: BentoCardProps[] = [
   },
   {
     color: "#0a0a0a",
-    title: "Insight on CPS",
+    title: "More Insight About CPS",
     description:
-      "Deep knowledge of Cyber Physical Systems and real-world applications",
+      "Deep knowledge of Cyber Physical Systems Laboratory and real-world applications",
     label: "Advanced Knowledge",
   },
   {
     color: "#0a0a0a",
-    title: "Relasi",
+    title: "Connection",
     description:
       "Build strong professional networks with industry experts and peers",
     label: "Networking",
